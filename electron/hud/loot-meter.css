@@ -1,0 +1,195 @@
+:root {
+  color-scheme: dark;
+  --font-scale: 1;
+  --lm-font: calc(11px * var(--font-scale));
+  --lm-font-sm: calc(10px * var(--font-scale));
+  --lm-font-lg: calc(20px * var(--font-scale));
+  --lm-font-xl: calc(28px * var(--font-scale));
+  --bg: #14161a;
+  --line: #23262c;
+  --text: #e8eaed;
+  --muted: #8b919a;
+  --gold: #e0c36a;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: transparent;
+  color: var(--text);
+  overflow: hidden;
+  user-select: none;
+}
+
+.loot-meter {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  border-radius: var(--hud-radius, 16px);
+  border: 1px solid #1b1d22;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  position: relative;
+  font-size: var(--lm-font);
+}
+
+.titlebar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 10px 4px;
+  cursor: move;
+  -webkit-app-region: no-drag;
+}
+
+.brand {
+  font-size: calc(13px * var(--font-scale));
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.elapsed {
+  margin-top: 2px;
+  color: var(--gold);
+  font-size: calc(12px * var(--font-scale));
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+.sub {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: var(--lm-font-sm);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.title-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  -webkit-app-region: no-drag;
+}
+
+.title-actions button,
+.loot-meter .hud-icon-btn,
+.loot-meter .hud-gear,
+.loot-meter .hud-reset,
+.loot-meter .hud-zero,
+.loot-meter .hud-close {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: #9aa0a8;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+.title-actions button:hover,
+.loot-meter .hud-icon-btn:hover {
+  color: var(--text);
+}
+
+.loot-meter .hud-close:hover {
+  color: #ff8d8d;
+}
+
+.summary.gold-only {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 12px;
+  padding: 8px 14px 14px;
+}
+
+.summary.gold-only .stat.rate {
+  grid-column: 1 / -1;
+}
+
+.stat span {
+  display: block;
+  color: var(--muted);
+  font-size: var(--lm-font-sm);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.stat b {
+  display: block;
+  margin-top: 2px;
+  font-size: var(--lm-font-lg);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.stat.gold b,
+.stat.gained b,
+.stat.rate b {
+  color: var(--gold);
+}
+
+.stat.rate b {
+  font-size: var(--lm-font-xl);
+  font-weight: 750;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.hud-settings {
+  top: 42px;
+}
+
+html[data-compact="1"] .loot-meter {
+  flex-direction: row;
+  align-items: center;
+  padding: 0 8px 0 10px;
+  gap: 12px;
+}
+
+html[data-compact="1"] .title-actions {
+  align-self: center;
+}
+
+html[data-compact="1"] .sub {
+  display: none;
+}
+
+html[data-compact="1"] .summary.gold-only {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0;
+  flex: 1;
+  min-width: 0;
+}
+
+html[data-compact="1"] .summary.gold-only .stat.rate {
+  grid-column: auto;
+}
+
+html[data-compact="1"] .stat span {
+  display: inline;
+  margin-right: 6px;
+}
+
+html[data-compact="1"] .stat b {
+  display: inline;
+  font-size: calc(14px * var(--font-scale));
+}
+
+html[data-compact="1"] .stat.rate b {
+  font-size: calc(15px * var(--font-scale));
+}

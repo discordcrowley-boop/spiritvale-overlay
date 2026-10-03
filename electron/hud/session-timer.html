@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Timer!</title>
+    <link rel="stylesheet" href="./hud-base.css" />
+    <link rel="stylesheet" href="./session-timer.css" />
+  </head>
+  <body>
+    <div class="details timer-shell" id="meter" data-state="idle">
+      <header class="titlebar">
+        <div class="mode-switch no-drag" id="modeSwitch">
+          <button type="button" data-mode="timer">Timer</button>
+          <button type="button" data-mode="clock">Clock</button>
+        </div>
+        <div class="title-actions no-drag">
+          <button type="button" id="close" title="Close">✕</button>
+        </div>
+      </header>
+
+      <div class="face" id="face">
+        <div class="readout" id="readout" aria-live="off"></div>
+      </div>
+      <div class="state-tag" id="stateTag"></div>
+
+      <div class="controls no-drag" id="controls">
+        <button type="button" class="ctl ctl-main" id="btnToggle" title="Start">
+          <svg class="ico-play" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M4.5 2.6v10.8L13 8z"/></svg>
+          <svg class="ico-pause" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M4 2.6h3v10.8H4zm5 0h3v10.8H9z"/></svg>
+        </button>
+        <button type="button" class="ctl" id="btnStop" title="Stop &amp; clear">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3.6 3.6h8.8v8.8H3.6z"/></svg>
+        </button>
+      </div>
+    </div>
+    <script src="./hud-chrome.js"></script>
+    <script src="./session-timer.js"></script>
+  </body>
+</html>

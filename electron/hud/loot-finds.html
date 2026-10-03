@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Loot!</title>
+    <link rel="stylesheet" href="./hud-base.css" />
+    <link rel="stylesheet" href="./loot-finds.css" />
+  </head>
+  <body>
+    <div class="details loot-meter" id="meter">
+      <header class="titlebar">
+        <div class="brand-wrap">
+          <div class="brand">Loot!</div>
+          <div class="sub" id="subLabel">Pickups + party chat</div>
+        </div>
+        <div class="title-actions no-drag">
+          <button type="button" id="reset" title="Reset">↺</button>
+          <button type="button" id="close" title="Close">✕</button>
+        </div>
+      </header>
+
+      <div class="summary">
+        <div class="stat gold">
+          <span>Items</span>
+          <b id="itemCount">0</b>
+          <small id="dropKinds">0 kinds</small>
+        </div>
+        <div class="stat wallet">
+          <span>Session</span>
+          <b id="sessionNote">since reset</b>
+          <small id="sourceNote">pickups + chat</small>
+        </div>
+      </div>
+
+      <div class="rows" id="rows">
+        <div class="empty">Pick something up or get a party-chat find — your loot is logged here.</div>
+      </div>
+    </div>
+    <script src="./hud-chrome.js"></script>
+    <script src="./loot-finds.js"></script>
+  </body>
+</html>

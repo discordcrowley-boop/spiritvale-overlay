@@ -1,0 +1,284 @@
+:root {
+  color-scheme: dark;
+  --font-scale: 1;
+  --em-font: calc(11px * var(--font-scale));
+  --em-font-sm: calc(10px * var(--font-scale));
+  --em-font-lg: calc(18px * var(--font-scale));
+  --em-font-xl: calc(24px * var(--font-scale));
+  --bg: #14161a;
+  --line: #23262c;
+  --text: #e8eaed;
+  --muted: #8b919a;
+  --xp: #7ad7ff;
+  --job: #c9a0ff;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: transparent;
+  color: var(--text);
+  overflow: hidden;
+  user-select: none;
+}
+
+.exp-meter {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  border-radius: var(--hud-radius, 16px);
+  border: 1px solid #1b1d22;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  font-size: var(--em-font);
+}
+
+.titlebar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 10px 4px;
+  cursor: move;
+  -webkit-app-region: no-drag;
+}
+
+.brand {
+  font-size: calc(13px * var(--font-scale));
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.sub {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: var(--em-font-sm);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.title-actions {
+  display: flex;
+  gap: 2px;
+  -webkit-app-region: no-drag;
+}
+
+.title-actions button,
+.exp-meter .hud-icon-btn,
+.exp-meter .hud-gear,
+.exp-meter .hud-reset,
+.exp-meter .hud-zero,
+.exp-meter .hud-close {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: #9aa0a8;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+.title-actions button:hover { color: var(--text); }
+.exp-meter .hud-close:hover { color: #ff8d8d; }
+
+.track {
+  flex: 0 0 auto;
+}
+
+.track.job {
+  border-top: 1px solid var(--line);
+  padding-top: 4px;
+}
+
+.track[hidden] {
+  display: none !important;
+}
+
+.track-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 2px 14px 0;
+}
+
+.track-label {
+  font-size: var(--em-font-sm);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.track.base .track-label { color: var(--xp); }
+.track.job .track-label { color: var(--job); }
+
+.track-max {
+  margin-left: auto;
+  font-size: calc(14px * var(--font-scale));
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--job);
+}
+
+.track.job[data-maxed="1"] .summary,
+.track.job[data-maxed="1"] .bar-wrap,
+.track.job[data-maxed="1"] .track-level {
+  display: none !important;
+}
+
+.track.job[data-maxed="1"] .track-head {
+  align-items: center;
+  padding: 8px 14px 10px;
+}
+
+html[data-compact="1"] .track.job[data-maxed="1"] .track-head {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+html[data-compact="1"] .track.job[data-maxed="1"] .summary {
+  display: none !important;
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 12px;
+  padding: 4px 14px 6px;
+}
+
+.stat span {
+  display: block;
+  color: var(--muted);
+  font-size: var(--em-font-sm);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.stat b {
+  display: block;
+  margin-top: 2px;
+  font-size: var(--em-font-lg);
+  font-weight: 700;
+  color: var(--xp);
+  letter-spacing: -0.02em;
+}
+
+.track.job .stat b { color: var(--job); }
+
+.stat.rate b {
+  font-size: var(--em-font-xl);
+  line-height: 1.05;
+}
+
+.bar-wrap {
+  padding: 0 14px 10px;
+}
+
+.bar {
+  height: 8px;
+  border-radius: 999px;
+  background: #1b1f25;
+  overflow: hidden;
+}
+
+.bar i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #3aa0d8, #7ad7ff);
+  border-radius: 999px;
+}
+
+.bar.job-bar i {
+  background: linear-gradient(90deg, #8b6bc9, #c9a0ff);
+}
+
+.bar-meta {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: var(--em-font-sm);
+}
+
+/* Horizontal compact strip — base TTL + optional job TTL */
+html[data-compact="1"] .exp-meter {
+  flex-direction: row;
+  align-items: center;
+  padding: 0 8px 0 10px;
+  gap: 10px;
+}
+
+html[data-compact="1"] .titlebar {
+  padding: 0;
+  flex: 0 0 auto;
+}
+
+html[data-compact="1"] .track {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+html[data-compact="1"] .track.job {
+  border-left: 1px solid var(--line);
+  padding-left: 10px;
+}
+
+html[data-compact="1"] .track-head {
+  padding: 0;
+  flex-direction: column;
+  gap: 0;
+}
+
+html[data-compact="1"] .summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0;
+  flex: 1;
+  min-width: 0;
+}
+
+html[data-compact="1"] .stat.gained,
+html[data-compact="1"] .stat.remain,
+html[data-compact="1"] .bar-wrap,
+html[data-compact="1"] .sub {
+  display: none;
+}
+
+html[data-compact="1"] .track-level {
+  display: block;
+  font-size: calc(9px * var(--font-scale));
+}
+
+html[data-compact="1"] .compact-pct {
+  display: inline;
+  margin-left: 6px;
+  color: var(--muted);
+  font-size: calc(11px * var(--font-scale));
+  font-weight: 650;
+}
+
+html[data-compact="1"] .stat span {
+  display: inline;
+  margin-right: 6px;
+}
+
+html[data-compact="1"] .stat b {
+  display: inline;
+  font-size: calc(14px * var(--font-scale));
+}
+
+.hud-settings { top: 42px; }

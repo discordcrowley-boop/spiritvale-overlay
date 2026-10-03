@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exp!</title>
+    <link rel="stylesheet" href="./hud-base.css" />
+    <link rel="stylesheet" href="./exp-meter.css" />
+  </head>
+  <body>
+    <div class="details exp-meter" id="meter">
+      <header class="titlebar">
+        <div class="brand-wrap">
+          <div class="brand">Exp!</div>
+          <div class="sub" id="subLabel">Session · since reset</div>
+        </div>
+        <div class="title-actions no-drag">
+          <button type="button" id="reset" title="Reset">↺</button>
+          <button type="button" id="close" title="Close">✕</button>
+        </div>
+      </header>
+
+      <div class="track base" id="baseTrack">
+        <div class="track-head">
+          <span class="track-label">Base</span>
+          <span class="track-level" id="baseLevel">Lv —</span>
+        </div>
+        <div class="summary">
+          <div class="stat rate">
+            <span>XP / hr</span>
+            <b id="xpRate">0</b>
+          </div>
+          <div class="stat ttl">
+            <span>Time to level</span>
+            <b id="ttl">—</b>
+            <i class="compact-pct" id="xpPctCompact"></i>
+          </div>
+          <div class="stat gained">
+            <span>Earned XP</span>
+            <b id="xpEarned">+0</b>
+          </div>
+          <div class="stat remain">
+            <span>XP to level</span>
+            <b id="xpRemain">—</b>
+          </div>
+        </div>
+        <div class="bar-wrap">
+          <div class="bar"><i id="xpBar" style="width:0%"></i></div>
+          <div class="bar-meta" id="xpPct">0%</div>
+        </div>
+      </div>
+
+      <div class="track job" id="jobTrack">
+        <div class="track-head">
+          <span class="track-label">Job</span>
+          <span class="track-level" id="jobLevel">Lv —</span>
+          <span class="track-max" id="jobMaxBadge" hidden>MAX</span>
+        </div>
+        <div class="summary" id="jobSummary">
+          <div class="stat rate">
+            <span>Job XP / hr</span>
+            <b id="jobXpRate">0</b>
+          </div>
+          <div class="stat ttl">
+            <span>Time to job</span>
+            <b id="jobTtl">—</b>
+          </div>
+          <div class="stat gained">
+            <span>Earned job XP</span>
+            <b id="jobXpEarned">+0</b>
+          </div>
+          <div class="stat remain">
+            <span>Job XP to level</span>
+            <b id="jobXpRemain">—</b>
+          </div>
+        </div>
+        <div class="bar-wrap" id="jobBarWrap">
+          <div class="bar job-bar"><i id="jobXpBar" style="width:0%"></i></div>
+          <div class="bar-meta" id="jobXpPct">0%</div>
+        </div>
+      </div>
+    </div>
+    <script src="./hud-chrome.js"></script>
+    <script src="./exp-meter.js"></script>
+  </body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gold!</title>
+    <link rel="stylesheet" href="./hud-base.css" />
+    <link rel="stylesheet" href="./loot-meter.css" />
+  </head>
+  <body>
+    <div class="details loot-meter gold-meter" id="meter">
+      <header class="titlebar">
+        <div class="brand-wrap">
+          <div class="brand">Gold!</div>
+          <div class="elapsed" id="elapsed">0:00</div>
+          <div class="sub" id="subLabel">Wallet · session rate</div>
+        </div>
+        <div class="title-actions no-drag">
+          <button type="button" id="reset" title="Reset">↺</button>
+          <button type="button" id="close" title="Close">✕</button>
+        </div>
+      </header>
+
+      <div class="summary gold-only">
+        <div class="stat gold">
+          <span>Inventory</span>
+          <b id="walletGold">—</b>
+        </div>
+        <div class="stat gained">
+          <span>Earned</span>
+          <b id="sessionGold">+0</b>
+        </div>
+        <div class="stat rate">
+          <span>Gold/hr</span>
+          <b id="goldRate">0</b>
+        </div>
+      </div>
+    </div>
+    <script src="./hud-chrome.js"></script>
+    <script src="./loot-meter.js"></script>
+  </body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Damage Done</title>
+    <link rel="stylesheet" href="./dps-meter.css" />
+    <link rel="stylesheet" href="./hud-base.css" />
+  </head>
+  <body>
+    <div class="details" id="meter">
+      <header class="titlebar drag">
+        <button type="button" class="plugin no-drag" id="menuBtn" title="Display menu">☰</button>
+        <div class="title" id="titleLabel">Damage Done</div>
+        <div class="title-actions no-drag">
+          <button type="button" id="bossOnly" class="boss-toggle" title="Boss only: count damage dealt to bosses" aria-pressed="false">BOSS</button>
+          <button type="button" id="reset" title="Reset">↺</button>
+          <button type="button" id="close" title="Close">✕</button>
+        </div>
+      </header>
+
+      <div class="menu" id="menu" hidden>
+        <button type="button" data-mode="0" class="menu-item active">Damage Done</button>
+        <button type="button" data-mode="1" class="menu-item">Healing Done</button>
+        <button type="button" data-mode="2" class="menu-item">Damage Taken</button>
+      </div>
+
+      <div class="rows" id="rows"></div>
+
+      <footer class="statusbar">
+        <span id="statusLeft">0s</span>
+        <span id="statusRight">0</span>
+      </footer>
+    </div>
+    <script src="./hud-chrome.js"></script>
+    <script src="./dps-meter.js"></script>
+  </body>
+</html>

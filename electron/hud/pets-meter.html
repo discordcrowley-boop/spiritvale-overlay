@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pets!</title>
+    <link rel="stylesheet" href="./hud-base.css" />
+    <link rel="stylesheet" href="./pets-meter.css" />
+  </head>
+  <body>
+    <div class="details pets-meter" id="meter">
+      <header class="titlebar">
+        <div class="brand-wrap">
+          <div class="brand">Pets!</div>
+          <div class="sub" id="subLabel">Active summons</div>
+        </div>
+        <div class="title-actions no-drag">
+          <button type="button" id="reset" title="Reset">↺</button>
+          <button type="button" id="close" title="Close">✕</button>
+        </div>
+      </header>
+
+      <div class="summary">
+        <div class="stat total">
+          <span>Active</span>
+          <b id="petCount">0</b>
+        </div>
+        <div class="stat lowest">
+          <span>Lowest</span>
+          <b id="petLowest">—</b>
+        </div>
+      </div>
+
+      <div class="list" id="petList">
+        <p class="empty">No active summons — summon a minion to track HP.</p>
+      </div>
+    </div>
+    <script src="./hud-chrome.js"></script>
+    <script src="./pets-meter.js"></script>
+  </body>
+</html>

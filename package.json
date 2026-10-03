@@ -1,0 +1,72 @@
+{
+  "name": "spiritvale-overlay",
+  "productName": "Spiritvale Overlay",
+  "version": "1.0.2",
+  "description": "Passive SpiritVale combat overlay: Meters!, Gold!, Kills!, Exp!, Pets!, and Loot!.",
+  "main": "electron/main.js",
+  "author": "Spiritvale",
+  "license": "AGPL-3.0-only",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "postinstall": "node node_modules/electron/install.js",
+    "build-db": "node scripts/build-db.cjs",
+    "dist": "electron-builder --win nsis --publish never"
+  },
+  "build": {
+    "appId": "app.spiritvale.overlay",
+    "productName": "Spiritvale Overlay",
+    "copyright": "Spiritvale Overlay",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "electron/**/*",
+      "assets/icon.png",
+      "package.json"
+    ],
+    "asarUnpack": [
+      "node_modules/bun/**",
+      "node_modules/@kar-mi/**",
+      "electron/capture/**",
+      "electron/data/**"
+    ],
+    "forceCodeSigning": false,
+    "win": {
+      "icon": "assets/icon.png",
+      "signtoolOptions": {
+        "sign": "build/no-sign.cjs"
+      },
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Spiritvale Overlay",
+      "artifactName": "Spiritvale-Overlay-Setup-${version}.${ext}"
+    }
+  },
+  "dependencies": {
+    "@kar-mi/spirit-vale-tools-capture": "3.0.4",
+    "@kar-mi/spirit-vale-tools-combat": "5.1.2",
+    "@kar-mi/spirit-vale-tools-items": "0.1.13",
+    "@kar-mi/spirit-vale-tools-rewards": "1.4.3",
+    "@kar-mi/spirit-vale-tools-skills": "0.2.6",
+    "@kar-mi/spirit-vale-tools-statuses": "0.3.2",
+    "bun": "1.4.2"
+  },
+  "devDependencies": {
+    "electron": "37.10.3",
+    "electron-builder": "26.15.3"
+  }
+}

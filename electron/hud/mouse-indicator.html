@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mouse Indicator</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: transparent;
+        pointer-events: none;
+        user-select: none;
+      }
+
+      #fx {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        --c1: #00f6ff;
+        --c2: #ffffff;
+        --size: 78px;
+        --thick: 4px;
+        --glow: 22px;
+      }
+
+      #fx.flash-boost {
+        filter: brightness(1.25) saturate(1.2);
+      }
+
+      .part {
+        position: absolute;
+        pointer-events: none;
+        box-sizing: border-box;
+      }
+
+      .ring {
+        width: var(--size);
+        height: var(--size);
+        border-radius: 50%;
+        border: var(--thick) solid var(--c1);
+        box-shadow:
+          0 0 calc(var(--glow) * 0.55) var(--c1),
+          0 0 var(--glow) color-mix(in srgb, var(--c1) 55%, transparent),
+          inset 0 0 calc(var(--glow) * 0.35) color-mix(in srgb, var(--c2) 35%, transparent);
+      }
+
+      .ring.outer {
+        width: calc(var(--size) * 1.28);
+        height: calc(var(--size) * 1.28);
+        border-color: var(--c2);
+        opacity: 0.7;
+      }
+
+      .cross::before,
+      .cross::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        background: var(--c1);
+        box-shadow: 0 0 calc(var(--glow) * 0.6) var(--c1);
+        transform: translate(-50%, -50%);
+      }
+
+      .cross::before {
+        width: var(--thick);
+        height: var(--size);
+      }
+
+      .cross::after {
+        width: var(--size);
+        height: var(--thick);
+      }
+
+      .target .ring {
+        width: calc(var(--size) * 0.72);
+        height: calc(var(--size) * 0.72);
+      }
+
+      .target .ring.outer {
+        width: var(--size);
+        height: var(--size);
+      }
+
+      .target .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--c2);
+        box-shadow: 0 0 12px var(--c1);
+      }
+
+      .diamond {
+        width: calc(var(--size) * 0.72);
+        height: calc(var(--size) * 0.72);
+        border: var(--thick) solid var(--c1);
+        transform: rotate(45deg);
+        box-shadow:
+          0 0 calc(var(--glow) * 0.6) var(--c1),
+          0 0 var(--glow) color-mix(in srgb, var(--c1) 50%, transparent);
+      }
+
+      .square {
+        width: calc(var(--size) * 0.7);
+        height: calc(var(--size) * 0.7);
+        border: var(--thick) solid var(--c1);
+        border-radius: 4px;
+        box-shadow:
+          0 0 calc(var(--glow) * 0.6) var(--c1),
+          0 0 var(--glow) color-mix(in srgb, var(--c1) 50%, transparent);
+      }
+
+      .flare {
+        width: calc(var(--size) * 1.05);
+        height: calc(var(--size) * 1.05);
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          color-mix(in srgb, var(--c2) 90%, transparent) 0%,
+          color-mix(in srgb, var(--c1) 55%, transparent) 28%,
+          color-mix(in srgb, var(--c1) 18%, transparent) 55%,
+          transparent 72%
+        );
+        box-shadow: 0 0 calc(var(--glow) * 1.2) color-mix(in srgb, var(--c1) 70%, transparent);
+      }
+
+      .burst {
+        width: var(--size);
+        height: var(--size);
+        background:
+          conic-gradient(
+            from 0deg,
+            var(--c1),
+            transparent 12%,
+            var(--c2) 18%,
+            transparent 30%,
+            var(--c1) 36%,
+            transparent 48%,
+            var(--c2) 54%,
+            transparent 66%,
+            var(--c1) 72%,
+            transparent 84%,
+            var(--c2) 90%,
+            transparent 100%
+          );
+        mask: radial-gradient(circle, transparent 28%, #000 30%, #000 48%, transparent 50%);
+        -webkit-mask: radial-gradient(circle, transparent 28%, #000 30%, #000 48%, transparent 50%);
+        filter: drop-shadow(0 0 calc(var(--glow) * 0.5) var(--c1));
+        opacity: 0.95;
+      }
+
+      .dots {
+        width: var(--size);
+        height: var(--size);
+      }
+
+      .dots span {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--c1);
+        box-shadow: 0 0 12px var(--c1);
+        left: 50%;
+        top: 50%;
+        margin: -5px 0 0 -5px;
+      }
+
+      .dots span:nth-child(1) {
+        transform: translate(0, calc(var(--size) * -0.42));
+      }
+      .dots span:nth-child(2) {
+        transform: rotate(120deg) translate(0, calc(var(--size) * -0.42));
+      }
+      .dots span:nth-child(3) {
+        transform: rotate(240deg) translate(0, calc(var(--size) * -0.42));
+      }
+
+      .arrow {
+        width: 0;
+        height: 0;
+        border-left: 14px solid transparent;
+        border-right: 14px solid transparent;
+        border-bottom: 28px solid var(--c1);
+        filter: drop-shadow(0 0 calc(var(--glow) * 0.55) var(--c1));
+        transform: translateY(-18px);
+      }
+
+      .arrow::after {
+        content: "";
+        position: absolute;
+        left: -5px;
+        top: 24px;
+        width: 10px;
+        height: 22px;
+        background: var(--c1);
+        box-shadow: 0 0 10px var(--c1);
+      }
+
+      /* Animations */
+      .anim-pulse .ring,
+      .anim-pulse .diamond,
+      .anim-pulse .square,
+      .anim-pulse .flare,
+      .anim-pulse .cross,
+      .anim-pulse .arrow {
+        animation: pulse 1.05s ease-in-out infinite;
+      }
+
+      .anim-flash #stage {
+        animation: flash 0.55s steps(2, end) infinite;
+      }
+
+      .anim-spin .ring,
+      .anim-spin .diamond,
+      .anim-spin .square,
+      .anim-spin .burst,
+      .anim-spin .dots,
+      .anim-spin .target {
+        animation: spin 2.4s linear infinite;
+      }
+
+      .anim-breathe #stage {
+        animation: breathe 1.6s ease-in-out infinite;
+      }
+
+      .anim-ripple .ring.outer {
+        animation: ripple 1.2s ease-out infinite;
+      }
+
+      .anim-orbit .dots {
+        animation: spin 1.4s linear infinite;
+      }
+
+      .anim-rainbow #stage {
+        animation: rainbow 2.2s linear infinite;
+      }
+
+      .anim-bounce #stage {
+        animation: bounce 0.7s ease-in-out infinite;
+      }
+
+      .anim-strobe #stage {
+        animation: strobe 0.28s steps(1, end) infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.06);
+          opacity: 0.78;
+        }
+      }
+
+      .anim-spin .diamond {
+        animation: spin-diamond 2.4s linear infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes spin-diamond {
+        to {
+          transform: rotate(405deg);
+        }
+      }
+
+      @keyframes flash {
+        0%,
+        49% {
+          opacity: 1;
+          filter: brightness(1.35);
+        }
+        50%,
+        100% {
+          opacity: 0.35;
+          filter: brightness(0.9);
+        }
+      }
+
+      @keyframes breathe {
+        0%,
+        100% {
+          transform: scale(0.94);
+          opacity: 0.78;
+        }
+        50% {
+          transform: scale(1.06);
+          opacity: 1;
+        }
+      }
+
+      @keyframes ripple {
+        0% {
+          transform: scale(0.92);
+          opacity: 0.85;
+        }
+        100% {
+          transform: scale(1.18);
+          opacity: 0;
+        }
+      }
+
+      @keyframes rainbow {
+        0% {
+          filter: hue-rotate(0deg) saturate(1.35) brightness(1.15);
+        }
+        100% {
+          filter: hue-rotate(360deg) saturate(1.35) brightness(1.15);
+        }
+      }
+
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(0) scale(1);
+        }
+        50% {
+          transform: translateY(-3px) scale(1.04);
+        }
+      }
+
+      @keyframes strobe {
+        0% {
+          opacity: 1;
+          filter: brightness(1.5);
+        }
+        50% {
+          opacity: 0.15;
+          filter: brightness(0.7);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="fx">
+      <div id="stage"></div>
+    </div>
+    <script>
+      const fx = document.getElementById("fx");
+      const stage = document.getElementById("stage");
+
+      function htmlFor(shape) {
+        switch (shape) {
+          case "double-ring":
+            return `<i class="part ring"></i><i class="part ring outer"></i>`;
+          case "cross":
+            return `<i class="part cross"></i>`;
+          case "target":
+            return `<div class="part target"><i class="part ring"></i><i class="part ring outer"></i><i class="part dot"></i></div>`;
+          case "diamond":
+            return `<i class="part diamond"></i>`;
+          case "square":
+            return `<i class="part square"></i>`;
+          case "flare":
+            return `<i class="part flare"></i>`;
+          case "burst":
+            return `<i class="part burst"></i>`;
+          case "dots":
+            return `<div class="part dots"><span></span><span></span><span></span></div>`;
+          case "arrow":
+            return `<i class="part arrow"></i>`;
+          case "ring":
+          default:
+            return `<i class="part ring"></i>`;
+        }
+      }
+
+      window.__applyMouseStyle = function apply(style) {
+        if (!style) return;
+        fx.style.setProperty("--c1", style.color || "#00f6ff");
+        fx.style.setProperty("--c2", style.color2 || "#ffffff");
+        fx.style.setProperty("--size", `${Number(style.size) || 78}px`);
+        fx.style.setProperty("--thick", `${Number(style.thickness) || 4}px`);
+        fx.style.setProperty("--glow", `${Number(style.glow) || 22}px`);
+        fx.className = "";
+        fx.classList.add(`anim-${style.animate || "none"}`);
+        fx.classList.toggle("flash-boost", Boolean(style.flash));
+        stage.innerHTML = htmlFor(style.shape || "ring");
+      };
+    </script>
+  </body>
+</html>

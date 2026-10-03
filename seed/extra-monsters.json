@@ -1,0 +1,45 @@
+{
+  "source": "spiritvalers.com/wiki-data/monsters.json",
+  "monsters": [
+    {
+      "id": "Devil Bat",
+      "displayName": "Fire Bat",
+      "slug": "devil-bat",
+      "level": 0,
+      "boss": false,
+      "baseExperience": 0,
+      "element": "Fire",
+      "race": "Demon"
+    },
+    {
+      "id": "Devil Hades",
+      "displayName": "Inferno Bat",
+      "slug": "devil-hades",
+      "level": 0,
+      "boss": false,
+      "baseExperience": 0,
+      "element": "Fire",
+      "race": "Demon"
+    },
+    {
+      "id": "Devil Hell",
+      "displayName": "Hell Bat",
+      "slug": "devil-hell",
+      "level": 0,
+      "boss": false,
+      "baseExperience": 0,
+      "element": "Fire",
+      "race": "Demon"
+    },
+    {
+      "id": "NightmareShadow",
+      "displayName": "Curse Manifestation",
+      "slug": "nightmareshadow",
+      "level": 150,
+      "boss": false,
+      "baseExperience": 48750,
+      "element": "Ghost",
+      "race": "Formless"
+    }
+  ]
+}

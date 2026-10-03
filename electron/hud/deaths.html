@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Monster Kills</title>
+    <link rel="stylesheet" href="./dps-meter.css" />
+    <link rel="stylesheet" href="./hud-base.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <div class="head">
+        <div>
+          <h1>Monster Kills</h1>
+          <div class="sub" id="sub">Your kills only</div>
+        </div>
+        <div class="actions">
+          <button type="button" id="reset">Reset</button>
+          <button type="button" id="close">✕</button>
+        </div>
+      </div>
+      <div class="body" id="body"><div class="empty">No monster kills yet.</div></div>
+    </div>
+    <script src="./hud-chrome.js"></script>
+    <script src="./deaths.js"></script>
+  </body>
+</html>

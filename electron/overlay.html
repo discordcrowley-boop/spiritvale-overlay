@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" data-palette="classic" data-mode="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Overlay</title>
+    <link rel="stylesheet" href="./theme-tokens.css" />
+    <link rel="stylesheet" href="./overlay.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Passive capture · ban-safe</p>
+        <h1>Overlay</h1>
+        <p class="lede" id="status">Checking capture…</p>
+      </div>
+      <div class="hero-actions" role="group" aria-label="Session controls">
+        <button type="button" class="ghost" id="stopOverlay" title="Stop capture and close meter windows">
+          Stop
+        </button>
+        <button type="button" class="svo-glow" id="startOverlay" title="Start live capture and open Meters! + Gold!">
+          Start Overlay
+        </button>
+      </div>
+    </header>
+
+    <section class="status-rail" aria-label="System status">
+      <article class="status-chip" data-check="npcap">
+        <span class="dot"></span>
+        <div>
+          <strong>Npcap</strong>
+          <p id="npcapText">Checking…</p>
+        </div>
+        <button type="button" class="linkish" data-link="npcap">Install</button>
+      </article>
+      <article class="status-chip" data-check="runtime">
+        <span class="dot"></span>
+        <div>
+          <strong>Capture</strong>
+          <p id="runtimeText">Checking…</p>
+        </div>
+      </article>
+      <article class="status-chip" data-check="game">
+        <span class="dot"></span>
+        <div>
+          <strong>SpiritVale</strong>
+          <p id="gameText">Start the game, then Start Overlay</p>
+        </div>
+      </article>
+      <div class="session-chip">
+        <span class="pill" id="sessionPill">Idle</span>
+        <p id="captureNote" class="hint tight"></p>
+      </div>
+    </section>
+
+    <section class="panel focus-panel">
+      <div class="panel-head">
+        <div>
+          <h2>Your meters</h2>
+          <p class="sub">
+            Toggle which meters Start Overlay opens. Compact and dock live on each card —
+            Start / Stop runs just that meter.
+          </p>
+        </div>
+      </div>
+      <div class="meter-grid" id="liveMeters"></div>
+      <div class="meter-global" id="meterGlobal">
+        <label class="meter-global-toggle">
+          <input type="checkbox" id="dockEnabled" />
+          <span>
+            <strong>One-bar dock</strong>
+            <small>Merge dock-marked meters into a single thin strip</small>
+          </span>
+        </label>
+        <button type="button" class="click-through-btn" id="clickThroughBtn" aria-pressed="true">
+          <span class="ct-dot" aria-hidden="true"></span>
+          <span class="ct-copy">
+            <strong>Click-through</strong>
+            <small>Lock HUD positions · clicks pass to the game</small>
+          </span>
+        </button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <h2>Coming soon</h2>
+          <p class="sub">More HUD windows — options stay ready for when they ship.</p>
+        </div>
+      </div>
+      <div class="soon-grid" id="soonMeters"></div>
+    </section>
+
+    <section class="panel" id="dataPanel">
+      <div class="panel-head">
+        <div>
+          <h2>Data</h2>
+          <p class="sub">Previous sessions, totaled by day.</p>
+        </div>
+        <button type="button" class="ghost compact" id="clearSessions" title="Clear saved session history">
+          Clear
+        </button>
+      </div>
+      <div id="sessionData" class="session-data">
+        <p class="empty">Play a session, then Stop or Reset Encounter — totals show up here.</p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <details class="fold" open>
+        <summary>
+          <span>Comfort &amp; look</span>
+          <span class="summary-hint">Opacity, lock, night mode</span>
+        </summary>
+        <div class="fold-body">
+          <label class="field">
+            Your character <span class="optional">(auto from game)</span>
+            <input type="text" id="personalName" placeholder="Detected when you enter the world" autocomplete="off" />
+          </label>
+          <p class="hint" id="personalNameHint">Reads the character you log into. Leave blank — it fills in automatically.</p>
+          <div class="controls two-col-controls">
+            <label class="toggle">
+              <input type="checkbox" id="hudCorners" checked />
+              Rounded corners on meters
+            </label>
+            <label class="field compact">
+              Overlay Opacity <span id="opacityLabel">88%</span>
+              <input type="range" id="opacity" min="35" max="100" value="88" />
+            </label>
+            <label class="toggle">
+              <input type="checkbox" id="nightMode" />
+              Dark mode — dim SpiritVale
+            </label>
+            <label class="field compact">
+              Dim amount <span id="nightDimLabel">45%</span>
+              <input type="range" id="nightDim" min="0" max="75" value="45" />
+            </label>
+          </div>
+          <p class="hint" id="nightHint">Click-through shade over the game. HUDs stay above it. Ctrl+Shift+D toggles.</p>
+
+          <label class="toggle muted">
+            <input type="checkbox" id="demoMode" />
+            Demo mode (fake combat — UI testing only)
+          </label>
+          <div class="row-actions">
+            <button type="button" class="row-btn" id="resetEncounter">Reset encounter</button>
+            <button type="button" class="row-btn" id="zeroMeters">Zero totals</button>
+            <button type="button" class="row-btn" id="acceptPolicy">I understand — keep it passive</button>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <section class="panel" id="mousePanel">
+      <details class="fold">
+        <summary>
+          <span>Mouse indicator</span>
+          <span class="pill" id="mousePill">Off</span>
+        </summary>
+        <div class="fold-body">
+          <p class="hint">
+            Bright click-through glow over SpiritVale’s custom cursor. Works without Start Overlay.
+            Use ↑ / ↓ to cycle presets.
+          </p>
+          <div class="controls">
+            <label class="toggle">
+              <input type="checkbox" id="mouseIndicator" />
+              Show mouse indicator
+            </label>
+            <label class="toggle">
+              <input type="checkbox" id="mouseAnimate" checked />
+              Animate selected style
+            </label>
+            <label class="toggle">
+              <input type="checkbox" id="mouseFlash" />
+              Extra flash / brightness boost
+            </label>
+            <label class="field">
+              Style preset
+              <select id="mouseStyle"></select>
+            </label>
+          </div>
+          <div class="mouse-preview" id="mousePreview" aria-hidden="true">
+            <span class="mouse-swatch" id="mouseSwatch"></span>
+            <div>
+              <strong id="mouseStyleName">Neon Cyan Ring</strong>
+              <p id="mouseStyleMeta">Rings · pulse</p>
+            </div>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <section class="panel soft">
+      <details class="fold">
+        <summary>
+          <span>Legal boundary</span>
+          <span class="summary-hint">What this overlay may and may not do</span>
+        </summary>
+        <div class="fold-body">
+          <p id="policySummary"></p>
+          <div class="two-col">
+            <div>
+              <h3 class="ok">Allowed</h3>
+              <ul id="allowedList"></ul>
+            </div>
+            <div>
+              <h3 class="bad">Never build</h3>
+              <ul id="forbiddenList"></ul>
+            </div>
+          </div>
+          <p class="hint" id="policyNote"></p>
+        </div>
+      </details>
+    </section>
+
+    <div id="previewTip" class="preview-tip" hidden>
+      <div class="preview-tip-label" id="previewTipLabel">Preview</div>
+      <div class="preview-tip-body" id="previewTipBody"></div>
+    </div>
+
+    <script src="./overlay.js"></script>
+  </body>
+</html>

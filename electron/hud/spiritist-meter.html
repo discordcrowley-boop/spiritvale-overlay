@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meters!</title>
+    <link rel="stylesheet" href="./hud-base.css" />
+    <link rel="stylesheet" href="./spiritist-meter.css" />
+  </head>
+  <body>
+    <div class="details spiritist" id="meter">
+      <header class="titlebar">
+        <div class="brand-wrap">
+          <div class="brand">Meters!</div>
+          <div class="sub" id="subLabel">Waiting for combat</div>
+        </div>
+        <div class="title-actions no-drag">
+          <span class="instance" id="instanceLabel"></span>
+          <button type="button" id="bossOnly" class="boss-toggle" title="Boss only: count damage dealt to bosses" aria-pressed="false">BOSS</button>
+          <button type="button" id="reset" title="Reset">↺</button>
+          <button type="button" id="close" title="Close">✕</button>
+        </div>
+      </header>
+
+      <nav class="tabs" id="tabs">
+        <button type="button" class="tab active" data-mode="0">DPS</button>
+        <button type="button" class="tab" data-mode="1">HPS</button>
+        <button type="button" class="tab" data-mode="2">Taken</button>
+      </nav>
+
+      <div class="totals">
+        <div class="party-rate" id="partyRate">0 DPS</div>
+        <div class="party-meta" id="partyMeta">TOTAL DAMAGE 0 · TIME 0s</div>
+      </div>
+
+      <div class="rows" id="rows">
+        <div class="empty">Waiting for combat…</div>
+      </div>
+    </div>
+    <script src="./hud-chrome.js"></script>
+    <script src="./spiritist-meter.js"></script>
+  </body>
+</html>

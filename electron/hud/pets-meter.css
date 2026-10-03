@@ -1,0 +1,336 @@
+:root {
+  color-scheme: dark;
+  --font-scale: 1;
+  --pm-font: calc(11px * var(--font-scale));
+  --pm-font-sm: calc(10px * var(--font-scale));
+  --pm-font-lg: calc(20px * var(--font-scale));
+  --pm-nums: calc(13px * var(--font-scale));
+  --pm-status: calc(18px * var(--font-scale));
+  /* Fixed status column — buff count must not shrink the HP bar. */
+  --pm-status-col: calc(112px * var(--font-scale));
+  --bg: #14161a;
+  --line: #23262c;
+  --text: #e8eaed;
+  --muted: #8b919a;
+  --hp: #5ad67d;
+  --hp-mid: #e0b44a;
+  --hp-low: #e06a5a;
+  --barrier: #7ad7ff;
+  --buff: #5ec8ff;
+  --debuff: #e06a5a;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: transparent;
+  color: var(--text);
+  overflow: hidden;
+  user-select: none;
+}
+
+.pets-meter {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  border-radius: var(--hud-radius, 16px);
+  border: 1px solid #1b1d22;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  font-size: var(--pm-font);
+}
+
+.titlebar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 10px 4px;
+  cursor: move;
+  -webkit-app-region: no-drag;
+}
+
+.brand {
+  font-size: calc(13px * var(--font-scale));
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.sub {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: var(--pm-font-sm);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.title-actions {
+  display: flex;
+  gap: 2px;
+  -webkit-app-region: no-drag;
+}
+
+.title-actions button,
+.pets-meter .hud-icon-btn,
+.pets-meter .hud-gear,
+.pets-meter .hud-reset,
+.pets-meter .hud-zero,
+.pets-meter .hud-close {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.title-actions button:hover,
+.pets-meter .hud-icon-btn:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 6px 12px 10px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stat span {
+  color: var(--muted);
+  font-size: var(--pm-font-sm);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.stat b {
+  font-size: var(--pm-font-lg);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.list {
+  flex: 1;
+  overflow: auto;
+  padding: 0 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.empty {
+  margin: 18px 6px;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.4;
+}
+
+.pet-row {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 8px;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.pet-icon,
+.pet-icon.missing {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: #1c1f25;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.pet-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.pet-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.pet-name {
+  font-weight: 650;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pet-nums {
+  color: #ffffff;
+  font-variant-numeric: tabular-nums;
+  font-size: var(--pm-nums);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
+}
+
+.pet-vitals {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--pm-status-col);
+  gap: 8px;
+  align-items: start;
+}
+
+.bar-wrap {
+  position: relative;
+  height: 10px;
+  border-radius: 999px;
+  background: #1c1f25;
+  overflow: hidden;
+  min-width: 0;
+  width: 100%;
+  align-self: center;
+}
+
+.bar-wrap i {
+  display: block;
+  height: 100%;
+  width: 0%;
+  border-radius: inherit;
+  background: var(--hp);
+  transition: width 120ms linear, background-color 160ms ease;
+}
+
+.bar-wrap i.mid {
+  background: var(--hp-mid);
+}
+
+.bar-wrap i.low {
+  background: var(--hp-low);
+}
+
+.bar-wrap i.unknown {
+  background: #3a3f48;
+  opacity: 0.55;
+}
+
+.bar-wrap .barrier {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, transparent, rgba(122, 215, 255, 0.55));
+  pointer-events: none;
+}
+
+.status-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  justify-content: flex-end;
+  width: var(--pm-status-col);
+  max-width: var(--pm-status-col);
+  min-height: var(--pm-status);
+  align-items: center;
+  align-content: flex-start;
+}
+
+.status-row.empty-status {
+  color: var(--muted);
+  font-size: var(--pm-font-sm);
+  justify-content: center;
+  min-width: 0;
+}
+
+.status-icon,
+.status-icon.missing {
+  position: relative;
+  width: var(--pm-status);
+  height: var(--pm-status);
+  border-radius: 5px;
+  object-fit: cover;
+  background: #1c1f25;
+  border: 1px solid transparent;
+  display: grid;
+  place-items: center;
+  font-size: calc(9px * var(--font-scale));
+  font-weight: 700;
+  color: var(--muted);
+  cursor: help;
+  flex: 0 0 auto;
+}
+
+.status-icon.buff {
+  border-color: rgba(94, 200, 255, 0.45);
+}
+
+.status-icon.debuff {
+  border-color: rgba(224, 106, 90, 0.55);
+}
+
+.status-icon[data-stacks]::after {
+  content: attr(data-stacks);
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  min-width: 10px;
+  height: 10px;
+  padding: 0 2px;
+  border-radius: 999px;
+  background: #0f1114;
+  color: var(--text);
+  font-size: 8px;
+  line-height: 10px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+html[data-compact="1"] .summary,
+html[data-compact="1"] .pet-icon,
+html[data-compact="1"] .pet-icon.missing {
+  display: none;
+}
+
+html[data-compact="1"] .pet-row {
+  grid-template-columns: 1fr;
+  padding: 6px 8px;
+}
+
+html[data-compact="1"] .list {
+  gap: 4px;
+  padding-bottom: 8px;
+}
+
+html[data-compact="1"] .pet-vitals {
+  grid-template-columns: minmax(0, 1fr) calc(96px * var(--font-scale));
+  gap: 6px;
+}
+
+html[data-compact="1"] .status-row {
+  width: calc(96px * var(--font-scale));
+  max-width: calc(96px * var(--font-scale));
+}

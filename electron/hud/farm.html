@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Loot</title>
+    <link rel="stylesheet" href="./loot.css" />
+    <link rel="stylesheet" href="./hud-base.css" />
+  </head>
+  <body>
+    <div class="att">
+      <header class="titlebar drag">
+        <div class="brand">All The Things</div>
+        <div class="sub">Loot</div>
+        <div class="actions no-drag">
+          <button type="button" id="reset" title="Reset">↺</button>
+          <button type="button" id="close" title="Close">✕</button>
+        </div>
+      </header>
+
+      <div class="rates" id="rates"></div>
+      <div class="bag" id="bagWeight">Bag weight · —</div>
+      <div class="list" id="list">
+        <div class="empty">No loot yet — keep farming.</div>
+      </div>
+    </div>
+    <script src="./hud-chrome.js"></script>
+    <script src="./farm.js"></script>
+  </body>
+</html>

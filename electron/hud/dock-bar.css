@@ -1,0 +1,211 @@
+:root {
+  color-scheme: dark;
+  --font-scale: 1;
+  --bg: #14161a;
+  --line: #23262c;
+  --text: #e8eaed;
+  --muted: #8b919a;
+  --gold: #e0c36a;
+  --xp: #7ad7ff;
+  --kill: #3ee0b0;
+  --dmg: #ff8d8d;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: transparent;
+  color: var(--text);
+  overflow: hidden;
+  user-select: none;
+}
+
+.dock-bar {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px 0 10px;
+  background: var(--bg);
+  border-radius: var(--hud-radius, 12px);
+  border: 1px solid #1b1d22;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+
+.titlebar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  cursor: move;
+  -webkit-app-region: no-drag;
+}
+
+.brand {
+  font-size: calc(11px * var(--font-scale));
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.brand-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1px;
+  line-height: 1.1;
+}
+
+.elapsed {
+  color: var(--gold);
+  font-size: calc(11px * var(--font-scale));
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+.title-actions {
+  display: flex;
+  gap: 2px;
+  -webkit-app-region: no-drag;
+}
+
+.title-actions button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: #9aa0a8;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  cursor: pointer;
+}
+
+.title-actions button:hover {
+  color: var(--text);
+}
+
+.segments {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.seg {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 0 12px;
+  min-width: 0;
+  white-space: nowrap;
+  border-left: 1px solid var(--line);
+}
+
+.seg .label {
+  font-size: calc(9px * var(--font-scale));
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.seg .value {
+  font-size: calc(13px * var(--font-scale));
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.seg.gold .value {
+  color: var(--gold);
+}
+.seg.exp .value {
+  color: var(--xp);
+}
+.seg.kills .value {
+  color: var(--kill);
+}
+.seg.meters .value {
+  color: var(--dmg);
+}
+
+.hud-settings {
+  top: 36px;
+  max-height: min(70vh, 420px);
+  overflow: auto;
+  min-width: 220px;
+}
+
+.dock-section {
+  margin: 8px 0;
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.dock-section-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 6px;
+  cursor: pointer;
+}
+
+.dock-section-head strong {
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.dock-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-left: 4px;
+}
+
+.dock-field {
+  display: grid;
+  grid-template-columns: 16px 1fr;
+  gap: 8px;
+  align-items: center;
+  margin: 0;
+  padding: 4px 6px;
+  cursor: pointer;
+  font-size: 0.78rem;
+}
+
+.dock-field span {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.dock-field i {
+  font-style: normal;
+  font-size: 0.68rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dock-field.main span {
+  font-weight: 650;
+}
+
+.dock-field input:disabled + span {
+  opacity: 0.45;
+}

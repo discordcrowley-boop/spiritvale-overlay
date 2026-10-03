@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Boss</title>
+    <link rel="stylesheet" href="./hud-base.css" />
+    <style>
+      .shell { border-color: #1a1a1a; background: rgba(8,8,8,.92); }
+      .head h1 { font-size: 11px; letter-spacing: .06em; }
+      .empty { padding: 16px 8px; text-align: center; }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <div class="head">
+        <div>
+          <h1>Boss Mechanics</h1>
+          <div class="sub">Confirmed bosses only</div>
+        </div>
+        <div class="actions"><button type="button" id="close">✕</button></div>
+      </div>
+      <div class="body" id="body"><div class="empty">No boss encounter yet.</div></div>
+    </div>
+    <script src="./hud-chrome.js"></script>
+    <script src="./boss.js"></script>
+  </body>
+</html>

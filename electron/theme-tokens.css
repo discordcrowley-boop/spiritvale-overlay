@@ -1,0 +1,136 @@
+:root,
+html[data-palette="classic"][data-mode="dark"] {
+  --scheme: dark;
+  --bg: #0b0f0e;
+  --chrome: #101816;
+  --panel: #121a18;
+  --line: #24332e;
+  --text: #e8f6f1;
+  --muted: #9bb5ad;
+  --accent: #3ee0b0;
+  --accent-dim: #1d6b55;
+  --accent-2: #e0c36a;
+  --gold: #e0c36a;
+  --gold-deep: #8a6b1f;
+  --btn-primary-bg: linear-gradient(180deg, #2a8f72, #1c5f4c);
+  --btn-primary-text: #e8fff6;
+  --glow-active: 0 0 0 1px rgba(62, 224, 176, 0.14);
+  --danger: #ff8d8d;
+  --bg-glow-1: rgba(62, 224, 176, 0.1);
+  --bg-glow-2: rgba(224, 195, 106, 0.05);
+  --chrome-sheen: color-mix(in srgb, var(--accent) 10%, transparent);
+  --panel-lift: color-mix(in srgb, var(--panel) 94%, black);
+  --shadow-panel: none;
+  --radius-lg: 14px;
+  --font: "Segoe UI", system-ui, sans-serif;
+}
+
+html[data-palette="classic"][data-mode="light"] {
+  --scheme: light;
+  --bg: #f3f7f5;
+  --chrome: #ffffff;
+  --panel: #ffffff;
+  --line: #c9d8d1;
+  --text: #14201c;
+  --muted: #5a7168;
+  --accent: #1a9b74;
+  --accent-dim: #147a5b;
+  --accent-2: #9a7a1a;
+  --gold: #9a7a1a;
+  --gold-deep: #6b5414;
+  --btn-primary-bg: linear-gradient(180deg, #2a8f72, #1c5f4c);
+  --btn-primary-text: #e8fff6;
+  --glow-active: 0 0 0 1px rgba(26, 155, 116, 0.2);
+  --danger: #c44747;
+  --bg-glow-1: rgba(26, 155, 116, 0.08);
+  --bg-glow-2: rgba(154, 122, 26, 0.05);
+  --chrome-sheen: color-mix(in srgb, var(--accent) 8%, transparent);
+  --panel-lift: #ffffff;
+  --shadow-panel: 0 8px 24px rgba(20, 32, 28, 0.06);
+}
+
+/* Neon — logo cyan / pink / gold on deep black */
+html[data-palette="neon"][data-mode="dark"] {
+  --scheme: dark;
+  --bg: #050508;
+  --chrome: #0a0a12;
+  --panel: #10101c;
+  --line: #2e2a4a;
+  --text: #f5f7ff;
+  --muted: #9aa3c7;
+  --accent: #4ef0ff;
+  --accent-dim: #1a7f8f;
+  --accent-2: #ff7eb6;
+  --gold: #ffd24a;
+  --gold-deep: #b8860b;
+  --btn-primary-bg: linear-gradient(135deg, #1a8aa8 0%, #163a55 55%, #2a1840 100%);
+  --btn-primary-text: #e8fbff;
+  --glow-active:
+    0 0 14px rgba(78, 240, 255, 0.35),
+    0 0 0 1px rgba(78, 240, 255, 0.4);
+  --danger: #ff7b9c;
+  --bg-glow-1: rgba(78, 240, 255, 0.14);
+  --bg-glow-2: rgba(255, 126, 182, 0.12);
+  --chrome-sheen: linear-gradient(
+    90deg,
+    rgba(78, 240, 255, 0.12),
+    rgba(255, 210, 74, 0.08),
+    rgba(255, 126, 182, 0.12)
+  );
+  --panel-lift: #12121f;
+  --shadow-panel:
+    0 0 0 1px rgba(78, 240, 255, 0.1),
+    0 16px 40px rgba(0, 0, 0, 0.45),
+    0 0 32px rgba(255, 126, 182, 0.04);
+  --radius-lg: 14px;
+  --font: "Segoe UI", system-ui, sans-serif;
+}
+
+html[data-palette="neon"][data-mode="light"] {
+  --scheme: light;
+  --bg: #f4f6ff;
+  --chrome: #ffffff;
+  --panel: #ffffff;
+  --line: #d0d6f0;
+  --text: #14162a;
+  --muted: #5c6488;
+  --accent: #0891b2;
+  --accent-dim: #0e7490;
+  --accent-2: #db2777;
+  --gold: #ca8a04;
+  --gold-deep: #a16207;
+  --btn-primary-bg: linear-gradient(135deg, #0891b2, #0e7490 60%, #be185d);
+  --btn-primary-text: #f0fdff;
+  --glow-active: 0 0 0 1px rgba(8, 145, 178, 0.3);
+  --danger: #be123c;
+  --bg-glow-1: rgba(8, 145, 178, 0.1);
+  --bg-glow-2: rgba(219, 39, 119, 0.08);
+  --chrome-sheen: color-mix(in srgb, var(--accent) 8%, transparent);
+  --panel-lift: #ffffff;
+  --shadow-panel: 0 10px 28px rgba(20, 22, 42, 0.08);
+}
+
+/* App-wide scrollbars: black thumb, transparent track */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.55) transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.55);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.78);
+}
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}

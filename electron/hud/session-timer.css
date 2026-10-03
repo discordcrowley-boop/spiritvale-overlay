@@ -1,0 +1,525 @@
+.timer-shell {
+  --c: #3ee0b0;
+  --fill: var(--c);
+  --ghost: 0.08;
+  --glow: 0.06em;
+  --skew: 0deg;
+  --face-bg: var(--panel);
+  --timer-opacity: 1;
+  --bg-pct: 100%;
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  opacity: var(--timer-opacity);
+  border-radius: var(--hud-radius);
+  background: color-mix(in srgb, var(--face-bg) var(--bg-pct), transparent);
+  border: 1px solid
+    color-mix(in srgb, rgba(255, 255, 255, calc(0.03 + var(--hud-look) * 0.08)) var(--bg-pct), transparent);
+  transition: opacity 0.2s ease;
+}
+
+/* Chrome stays out of the way until hovered. */
+.timer-shell .titlebar {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  height: 26px;
+  padding: 0 4px 0 8px;
+  background: linear-gradient(rgba(0, 0, 0, 0.62), rgba(0, 0, 0, 0));
+  opacity: 0;
+  transition: opacity 0.16s ease;
+}
+
+.timer-shell .brand {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.timer-shell .title-actions {
+  gap: 1px;
+}
+
+.mode-switch {
+  display: flex;
+  padding: 2px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.mode-switch button {
+  appearance: none;
+  padding: 2px 9px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font: 800 9px/1.3 "Segoe UI", system-ui, sans-serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.mode-switch button:hover {
+  color: #fff;
+}
+
+.mode-switch button.on {
+  background: color-mix(in srgb, var(--c) 28%, transparent);
+  color: #fff;
+}
+
+.timer-shell[data-mode="clock"] .controls {
+  display: none;
+}
+
+.ampm {
+  align-self: flex-start;
+  margin: 0.06em 0 0 0.12em;
+  font: 800 0.26em/1 "Segoe UI", system-ui, sans-serif;
+  letter-spacing: 0.04em;
+  color: var(--c);
+}
+
+.timer-shell .title-actions .hud-icon-btn {
+  width: 22px;
+  height: 22px;
+  opacity: 1;
+}
+
+.timer-shell .controls {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  z-index: 5;
+  display: flex;
+  gap: 4px;
+  padding: 3px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  opacity: 0;
+  transition: opacity 0.16s ease;
+}
+
+body:hover .timer-shell .titlebar,
+body:hover .timer-shell .controls,
+.timer-shell[data-controls="always"] .controls,
+body.hud-moving .timer-shell .titlebar {
+  opacity: 1;
+}
+
+.ctl {
+  appearance: none;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #e8f6f1;
+  cursor: pointer;
+}
+
+.ctl svg {
+  width: 11px;
+  height: 11px;
+}
+
+.ctl:hover {
+  border-color: var(--c);
+  color: var(--c);
+}
+
+.ctl-main {
+  border-color: color-mix(in srgb, var(--c) 60%, transparent);
+  color: var(--c);
+}
+
+.ctl .ico-pause,
+.timer-shell[data-state="running"] .ctl .ico-play {
+  display: none;
+}
+
+.timer-shell[data-state="running"] .ctl .ico-pause {
+  display: block;
+}
+
+.face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.readout {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: flex;
+  align-items: center;
+  transform: translate(-50%, -50%);
+  font-size: 100px;
+  line-height: 1;
+  color: var(--c);
+  white-space: nowrap;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.readout-inner {
+  display: flex;
+  align-items: center;
+  transform: skewX(var(--skew));
+  filter: drop-shadow(0 0 var(--glow) color-mix(in srgb, var(--c) 70%, transparent));
+}
+
+.timer-shell[data-mode="timer"][data-state="idle"] .readout {
+  opacity: 0.55;
+}
+
+.timer-shell[data-mode="timer"][data-state="paused"][data-blink="1"] .readout {
+  animation: timer-blink 1.2s steps(1, end) infinite;
+}
+
+@keyframes timer-blink {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+.state-tag {
+  position: absolute;
+  left: 7px;
+  bottom: 5px;
+  z-index: 4;
+  color: var(--c);
+  font: 800 8px/1 "Segoe UI", system-ui, sans-serif;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+/* ---------- seven-segment ---------- */
+.d7 {
+  position: relative;
+  width: 0.56em;
+  height: 1em;
+  margin: 0 0.045em;
+}
+
+.d7 i {
+  position: absolute;
+  display: block;
+  background: var(--fill);
+  opacity: var(--ghost);
+}
+
+.d7 i.on {
+  opacity: 1;
+}
+
+.d7 .a,
+.d7 .g,
+.d7 .d {
+  left: 0.07em;
+  right: 0.07em;
+  height: 0.1em;
+  clip-path: polygon(0.05em 0, calc(100% - 0.05em) 0, 100% 50%, calc(100% - 0.05em) 100%, 0.05em 100%, 0 50%);
+}
+
+.d7 .a {
+  top: 0;
+}
+
+.d7 .g {
+  top: calc(50% - 0.05em);
+}
+
+.d7 .d {
+  bottom: 0;
+}
+
+.d7 .b,
+.d7 .c,
+.d7 .e,
+.d7 .f {
+  width: 0.1em;
+  height: calc(50% - 0.07em);
+  clip-path: polygon(50% 0, 100% 0.05em, 100% calc(100% - 0.05em), 50% 100%, 0 calc(100% - 0.05em), 0 0.05em);
+}
+
+.d7 .f {
+  left: 0;
+  top: 0.055em;
+}
+
+.d7 .b {
+  right: 0;
+  top: 0.055em;
+}
+
+.d7 .e {
+  left: 0;
+  bottom: 0.055em;
+}
+
+.d7 .c {
+  right: 0;
+  bottom: 0.055em;
+}
+
+.c7,
+.p7 {
+  position: relative;
+  width: 0.2em;
+  height: 1em;
+}
+
+.c7 i,
+.p7 i {
+  position: absolute;
+  left: 0.05em;
+  width: 0.1em;
+  height: 0.1em;
+  background: var(--fill);
+}
+
+.c7 i:first-child {
+  top: 0.27em;
+}
+
+.c7 i:last-child {
+  top: 0.63em;
+}
+
+.p7 i {
+  bottom: 0;
+}
+
+/* ---------- dot matrix ---------- */
+.m5 {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 5), var(--dot, 0.115em));
+  grid-auto-rows: var(--dot, 0.115em);
+  gap: var(--dot-gap, 0.033em);
+  margin: 0 0.06em;
+}
+
+.m5 b {
+  display: block;
+  border-radius: 50%;
+  background: var(--fill);
+  opacity: var(--ghost);
+}
+
+.m5 b.on {
+  opacity: 1;
+}
+
+/* ---------- font faces ---------- */
+.ft {
+  display: inline-block;
+  width: var(--cw, 0.6em);
+  text-align: center;
+}
+
+.ft.sep {
+  width: var(--sw, 0.3em);
+}
+
+.readout[data-kind="font"] .readout-inner {
+  font-family: var(--font, "Segoe UI", system-ui, sans-serif);
+  font-weight: var(--weight, 600);
+  font-stretch: var(--stretch, normal);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+/* ---------- styles ---------- */
+.timer-shell[data-style="led-red"] { --c: #ff3b30; }
+.timer-shell[data-style="led-green"] { --c: #39ff6a; }
+.timer-shell[data-style="led-blue"] { --c: #4fc3ff; }
+.timer-shell[data-style="led-amber"] { --c: #ffb000; }
+.timer-shell[data-style="led-mint"] { --c: #3ee0b0; }
+.timer-shell[data-style="led-violet"] { --c: #b47bff; }
+.timer-shell[data-style="led-pink"] { --c: #ff4fd8; }
+.timer-shell[data-style="led-gold"] { --c: #e0c36a; }
+.timer-shell[data-style="led-white"] { --c: #f2f6ff; --ghost: 0; --glow: 0.04em; }
+
+.timer-shell[data-style="led-sunset"] {
+  --c: #ff8a4c;
+  --fill: linear-gradient(180deg, #ffd25a, #ff4f6d);
+}
+
+.timer-shell[data-style="lcd-retro"] {
+  --c: #1f2d1b;
+  --ghost: 0.1;
+  --glow: 0;
+  --face-bg: #9fb48a;
+}
+
+.timer-shell[data-style="lcd-casio"] {
+  --c: #23262a;
+  --ghost: 0.09;
+  --glow: 0;
+  --face-bg: #b9c1b0;
+}
+
+.timer-shell[data-style="lcd-retro"],
+.timer-shell[data-style="lcd-casio"] {
+  border-color: color-mix(in srgb, rgba(0, 0, 0, 0.35) var(--bg-pct), transparent);
+  box-shadow: inset 0 0 0.6em color-mix(in srgb, rgba(0, 0, 0, 0.25) var(--bg-pct), transparent);
+}
+
+.timer-shell[data-style="dot-amber"] { --c: #ffb347; --ghost: 0.1; }
+.timer-shell[data-style="dot-cyan"] { --c: #4ff0ff; --ghost: 0.1; }
+.timer-shell[data-style="dot-red"] { --c: #ff4040; --ghost: 0.1; }
+.timer-shell[data-style="dot-green"] { --c: #3bff7a; --ghost: 0.12; }
+
+.timer-shell[data-style="dot-stadium"] {
+  --c: #ffffff;
+  --ghost: 0.07;
+  --glow: 0.03em;
+  --dot: 0.125em;
+  --dot-gap: 0.022em;
+}
+
+.timer-shell[data-style="minimal"] {
+  --c: #f4f7fb;
+  --glow: 0;
+  --font: "Segoe UI Light", "Segoe UI", system-ui, sans-serif;
+  --weight: 200;
+  --cw: 0.56em;
+  --sw: 0.26em;
+}
+
+.timer-shell[data-style="bahn"] {
+  --c: #3ee0b0;
+  --glow: 0.04em;
+  --font: Bahnschrift, "Segoe UI", sans-serif;
+  --weight: 600;
+  --stretch: condensed;
+  --cw: 0.5em;
+  --sw: 0.24em;
+}
+
+.timer-shell[data-style="terminal"] {
+  --c: #33ff66;
+  --glow: 0.08em;
+  --font: Consolas, "Cascadia Mono", monospace;
+  --weight: 400;
+  --cw: 0.56em;
+  --sw: 0.4em;
+}
+
+.timer-shell[data-style="terminal"] .face::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.28) 0 1px, transparent 1px 3px);
+}
+
+.timer-shell[data-style="cyber"] {
+  --c: #fcee0a;
+  --glow: 0;
+  --font: Bahnschrift, "Segoe UI", sans-serif;
+  --weight: 800;
+  --stretch: semi-condensed;
+  --skew: -8deg;
+  --cw: 0.56em;
+  --sw: 0.26em;
+}
+
+.timer-shell[data-style="cyber"] .readout-inner {
+  text-shadow: 0.04em 0.03em 0 #00e5ff, -0.03em -0.02em 0 #ff2a6d;
+}
+
+.timer-shell[data-style="outline"] {
+  --c: #f4f7fb;
+  --glow: 0.05em;
+  --font: "Segoe UI", system-ui, sans-serif;
+  --weight: 800;
+  --cw: 0.6em;
+}
+
+.timer-shell[data-style="outline"] .readout-inner {
+  color: transparent;
+  -webkit-text-stroke: 0.025em var(--c);
+}
+
+.timer-shell[data-style="vapor"] {
+  --c: #ff71ce;
+  --glow: 0.05em;
+  --font: Bahnschrift, "Segoe UI", sans-serif;
+  --weight: 700;
+  --cw: 0.56em;
+}
+
+.timer-shell[data-style="vapor"] .ft,
+.timer-shell[data-style="frost"] .ft {
+  background: var(--text-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.timer-shell[data-style="vapor"] { --text-grad: linear-gradient(180deg, #ff71ce, #01cdfe); }
+
+.timer-shell[data-style="mono-gold"] {
+  --c: #e0c36a;
+  --glow: 0.05em;
+  --font: "Cascadia Mono", Consolas, monospace;
+  --weight: 600;
+  --cw: 0.6em;
+  --sw: 0.4em;
+}
+
+.timer-shell[data-style="blood-moon"] {
+  --c: #ff7a1a;
+  --glow: 0.1em;
+  --font: Bahnschrift, "Segoe UI", sans-serif;
+  --weight: 700;
+  --stretch: condensed;
+  --cw: 0.5em;
+  --sw: 0.24em;
+}
+
+.timer-shell[data-style="blood-moon"] .readout-inner {
+  filter: drop-shadow(0 0 0.1em rgba(200, 20, 20, 0.85));
+}
+
+.timer-shell[data-style="frost"] {
+  --c: #bfefff;
+  --glow: 0.07em;
+  --font: "Segoe UI Semibold", "Segoe UI", sans-serif;
+  --weight: 600;
+  --cw: 0.58em;
+  --text-grad: linear-gradient(180deg, #ffffff, #8fdcff);
+}
+
+.timer-shell[data-style="impact"] {
+  --c: #ffffff;
+  --glow: 0;
+  --font: Impact, "Arial Black", sans-serif;
+  --weight: 400;
+  --cw: 0.52em;
+  --sw: 0.24em;
+}
+
+.timer-shell[data-style="impact"] .readout-inner {
+  text-shadow: 0 0.04em 0 rgba(0, 0, 0, 0.75);
+}
+
+.timer-shell[data-style^="led-"] {
+  --skew: -6deg;
+}

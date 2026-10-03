@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dock</title>
+    <link rel="stylesheet" href="./hud-base.css" />
+    <link rel="stylesheet" href="./dock-bar.css" />
+  </head>
+  <body>
+    <div class="dock-bar" id="meter">
+      <header class="titlebar">
+        <div class="brand-wrap">
+          <div class="brand">Dock</div>
+          <div class="elapsed" id="elapsed">0:00</div>
+        </div>
+        <div class="title-actions no-drag">
+          <button type="button" id="reset" title="Reset encounter">↺</button>
+          <button type="button" id="close" title="Close">✕</button>
+        </div>
+      </header>
+      <div class="segments" id="segments"></div>
+    </div>
+    <script src="./hud-chrome.js"></script>
+    <script src="./dock-bar.js"></script>
+  </body>
+</html>
